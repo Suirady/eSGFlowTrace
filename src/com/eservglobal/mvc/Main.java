@@ -2,29 +2,48 @@ package com.eservglobal.mvc;
 
 import insidefx.undecorator.Undecorator;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class NaivgationDrawer extends Application {
-    
-    public static Boolean isSplashLoaded = false;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
+public class Main extends Application implements Initializable {
+
+    static Boolean isSplashLoaded = false;
+
+    @FXML
+    private BorderPane borderPane;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        try {
+            borderPane.setCenter(FXMLLoader.load(getClass().getResource("CenterPanel.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void start(final Stage stage) throws Exception {
-        Region root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        Region root = FXMLLoader.load(getClass().getResource("Main.fxml"));
 
         // undecorator extends StackPane
         Undecorator undecorator = new Undecorator(stage, root);
         undecorator.getStylesheets().add("skin/undecorator.css");
-        // undecorator.getStylesheets().add("@resources/mySettings.css");
 
-        Scene scene = new Scene(undecorator, 600, 400);
+        Scene scene = new Scene(undecorator, 750, 500);
         stage.setScene(scene);
 
         // Fade transition on window closing request
@@ -33,19 +52,22 @@ public class NaivgationDrawer extends Application {
             undecorator.setFadeOutTransition();
         });
 
-        // hidden some button
+        // hide some buttons
         Node node = scene.lookup("#StageMenu");
         node.setVisible(false);
+        node = scene.lookup("#fullscreen");
+        node.setVisible(false);
+        node = scene.lookup("#maximize");
+        node.setVisible(false);
+        node = scene.lookup("#minimize");
+        AnchorPane.setRightAnchor(node, AnchorPane.getRightAnchor(node) - 34.0);
 
         // Transparent scene and stage
         scene.setFill(Color.TRANSPARENT);
         stage.initStyle(StageStyle.TRANSPARENT);
 
-        // Set minimum size
-        stage.setMinWidth(300);
-        stage.setMinHeight(200);
         stage.setTitle("No title bar");
-
+        stage.setResizable(false);
         stage.show();
     }
 

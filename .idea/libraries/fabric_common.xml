@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="fabric-common">
     <CLASSES>
-      <root url="jar://C:/Oracle/Middleware/oracle_common/modules/oracle.fabriccommon_11.1.1/fabric-common.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../libs/fabric-common.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="oracle.jrf_11.1">
     <CLASSES>
-      <root url="file://C:/Oracle/Middleware/oracle_common/modules/oracle.jrf_11.1.1" />
+      <root url="file://$PROJECT_DIR$/../../libs/oracle.jrf_11.1.1" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="file://C:/Oracle/Middleware/oracle_common/modules/oracle.jrf_11.1.1" />
+      <root url="file://$PROJECT_DIR$/../../libs/oracle.jrf_11.1.1" />
     </SOURCES>
-    <jarDirectory url="file://C:/Oracle/Middleware/oracle_common/modules/oracle.jrf_11.1.1" recursive="false" />
-    <jarDirectory url="file://C:/Oracle/Middleware/oracle_common/modules/oracle.jrf_11.1.1" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../libs/oracle.jrf_11.1.1" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../libs/oracle.jrf_11.1.1" recursive="false" type="SOURCES" />
   </library>
 </component>

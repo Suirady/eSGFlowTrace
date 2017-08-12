@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.effect.Glow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,27 +19,39 @@ public class SidePanelContentController implements Initializable {
     @FXML
     private JFXButton b3;
     @FXML
-    private JFXButton exit;
+    private JFXButton b4;
+
+    static JFXButton b2P;
+    static JFXButton b3P;
+    static JFXButton b4P;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
+        b2P = b2;
+        b3P = b3;
+        b4P = b4;
+    }
 
     @FXML
-    private void changeColor(ActionEvent event) {
+    private void chooseAction(ActionEvent event) {
         JFXButton btn = (JFXButton) event.getSource();
         System.out.println(btn.getText());
-        switch(btn.getText())
-        {
-            case "Color 1":
-                FXMLDocumentController.rootP.setStyle("-fx-background-color:#00FF00");
+        switch (btn.getText()) {
+            case "Connection details":
+                boolean isVisible = CenterPanelController.gridPaneP.isVisible();
+                if (isVisible) {
+                    CenterPanelController.gridPaneP.setVisible(false);
+                    CenterPanelController.connectBtnP.setVisible(false);
+                } else {
+                    CenterPanelController.gridPaneP.setVisible(true);
+                    CenterPanelController.connectBtnP.setVisible(true);
+                }
                 break;
             case "Color 2":
-                FXMLDocumentController.rootP.setStyle("-fx-background-color:#0000FF");
+                //  CenterPanelController.anchorPaneP.setStyle("-fx-background-color:#0000FF");
                 break;
             case "Color 3":
-                FXMLDocumentController.rootP.setStyle("-fx-background-color:#FF0000");
+                //     CenterPanelController.anchorPaneP.setStyle("-fx-background-color:#FF0000");
                 break;
         }
     }
@@ -47,5 +60,5 @@ public class SidePanelContentController implements Initializable {
     private void exit(ActionEvent event) {
         System.exit(0);
     }
-    
+
 }

@@ -7,7 +7,7 @@ import javafx.scene.layout.StackPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SplashFXMLController implements Initializable {
+public class SplashController implements Initializable {
 
     @FXML
     private StackPane rootPane;

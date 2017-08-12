@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="oracle.soa.mgmt_11.1">
     <CLASSES>
-      <root url="file://C:/Oracle/Middleware/jdeveloper/soa/modules/oracle.soa.mgmt_11.1.1" />
+      <root url="file://$PROJECT_DIR$/../../libs/oracle.soa.mgmt_11.1.1" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
-    <jarDirectory url="file://C:/Oracle/Middleware/jdeveloper/soa/modules/oracle.soa.mgmt_11.1.1" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../libs/oracle.soa.mgmt_11.1.1" recursive="false" />
   </library>
 </component>

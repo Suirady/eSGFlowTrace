@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="wlclient">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/wlclient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../libs/wlclient.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

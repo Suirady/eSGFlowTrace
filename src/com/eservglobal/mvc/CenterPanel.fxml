@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<?import javafx.scene.text.Font?>
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="388.0" prefWidth="720.0"
+            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.eservglobal.mvc.CenterPanelController">
+    <children>
+        <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutY="-6.0" prefHeight="388.0" prefWidth="115.0"/>
+        <JFXHamburger fx:id="hamburger" layoutX="668.0" layoutY="14.0"/>
+        <GridPane fx:id="gridPane"  visible="false" alignment="CENTER" layoutX="216.0" layoutY="84.0" prefHeight="190.0" prefWidth="337.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="88.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="247.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label text="EM URL"/>
+                <Label text="USERNAME" GridPane.rowIndex="1"/>
+                <Label text="PASSWORD" GridPane.rowIndex="2"/>
+                <JFXTextField alignment="CENTER" GridPane.columnIndex="1">
+                    <font>
+                        <Font name="Calibri" size="16"/>
+                    </font>
+                </JFXTextField>
+                <JFXTextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <font>
+                        <Font name="Calibri" size="16"/>
+                    </font>
+                </JFXTextField>
+                <JFXPasswordField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            </children>
+        </GridPane>
+        <JFXButton fx:id="connectBtn" visible="false" buttonType="RAISED" layoutX="343.0" layoutY="274.0" mnemonicParsing="false" text="CONNECT"
+                   ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" AnchorPane.rightAnchor="330.0" AnchorPane.bottomAnchor="60"/>
+    </children>
+</AnchorPane>

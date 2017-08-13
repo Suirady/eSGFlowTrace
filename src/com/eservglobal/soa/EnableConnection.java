@@ -1,6 +1,5 @@
 package com.eservglobal.soa;
 
-import oracle.soa.management.facade.Locator;
 import oracle.soa.management.facade.LocatorFactory;
 import javax.naming.Context;
 import java.util.Hashtable;
@@ -11,7 +10,6 @@ public class EnableConnection {
     private String username;
     private String password;
 
-    private static Locator loc = null;
     private static final String CONTEXT_FACTORY = "weblogic.jndi.WLInitialContextFactory";
 
     public EnableConnection(String address, String username, String password) {
@@ -21,17 +19,13 @@ public class EnableConnection {
     }
 
     public void connect() throws Exception {
-        try {
             // if connection successful save data to singleton to be able to write it later to file
             ComponentData.getInstance().setLoc(LocatorFactory.createLocator(getConnectionDetails()));
-        } finally {
-            closeLoc();
-        }
     }
 
     public static void closeLoc() {
-        if (loc != null) {
-            loc.close();
+        if (ComponentData.getInstance().getLoc() != null) {
+            ComponentData.getInstance().getLoc().close();
             System.out.println("Closed Connection!");
         } else {
             System.out.println("No connection to close");

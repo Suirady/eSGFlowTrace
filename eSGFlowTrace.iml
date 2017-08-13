@@ -7,7 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="UndecoratorBis" level="project" />
     <orderEntry type="library" name="fabric-common" level="project" />
     <orderEntry type="library" name="jfoenix-1.7.0" level="project" />
     <orderEntry type="library" name="wlfullclient" level="project" />
@@ -16,5 +15,6 @@
     <orderEntry type="library" name="wlclient" level="project" />
     <orderEntry type="library" name="oracle.jrf_11.1" level="project" />
     <orderEntry type="library" name="oracle.soa.mgmt_11.1" level="project" />
+    <orderEntry type="library" name="UndecoratorBis" level="project" />
   </component>
 </module>

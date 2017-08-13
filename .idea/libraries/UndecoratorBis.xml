@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="UndecoratorBis">
     <CLASSES>
-      <root url="jar://Y:/Downloads/UndecoratorBis.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../libs/UndecoratorBis.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

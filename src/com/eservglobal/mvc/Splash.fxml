@@ -2,25 +2,14 @@
 
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-           prefHeight="360.0" prefWidth="508.0" xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.eservglobal.mvc.SplashController">
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="222.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.eservglobal.mvc.SplashController">
     <children>
-        <ImageView fitHeight="370.0" fitWidth="508.0" pickOnBounds="true">
+        <ImageView fitHeight="191.0" fitWidth="669.0" pickOnBounds="true">
             <image>
-                <Image url="@resources/eSG_Logo_RGB.jpg"/>
+                <Image url="@resources/Loading.gif" />
             </image>
         </ImageView>
-        <Pane opacity="0.45" prefHeight="352.0" prefWidth="522.0" style="-fx-background-color: #000000;"/>
-        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME">
-            <font>
-                <Font name="Roboto Medium" size="56.0"/>
-            </font>
-        </Text>
     </children>
 </StackPane>

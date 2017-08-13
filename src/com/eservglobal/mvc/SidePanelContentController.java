@@ -1,11 +1,13 @@
 package com.eservglobal.mvc;
 
+import com.eservglobal.soa.GetComponentsBasedOnCompositeId;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.effect.Glow;
+import javafx.scene.paint.Paint;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -20,20 +22,21 @@ public class SidePanelContentController implements Initializable {
     private JFXButton b3;
     @FXML
     private JFXButton b4;
-
+    static JFXButton b1P;
     static JFXButton b2P;
     static JFXButton b3P;
     static JFXButton b4P;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        b1P = b1;
         b2P = b2;
         b3P = b3;
         b4P = b4;
     }
 
     @FXML
-    private void chooseAction(ActionEvent event) {
+    private void chooseAction(ActionEvent event) throws IOException {
         JFXButton btn = (JFXButton) event.getSource();
         System.out.println(btn.getText());
         switch (btn.getText()) {
@@ -47,18 +50,14 @@ public class SidePanelContentController implements Initializable {
                     CenterPanelController.connectBtnP.setVisible(true);
                 }
                 break;
-            case "Color 2":
-                //  CenterPanelController.anchorPaneP.setStyle("-fx-background-color:#0000FF");
+            case "Search by instance ID":
                 break;
-            case "Color 3":
-                //     CenterPanelController.anchorPaneP.setStyle("-fx-background-color:#FF0000");
+            case "Search by composite name":
+                break;
+            case "Disconnect":
+                BackPanelController.circleP.setFill(Paint.valueOf("#ff3140"));
+                GetComponentsBasedOnCompositeId.closeLoc();
                 break;
         }
     }
-
-    @FXML
-    private void exit(ActionEvent event) {
-        System.exit(0);
-    }
-
 }

@@ -10,42 +10,39 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-
 <?import javafx.scene.text.Font?>
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="388.0" prefWidth="720.0"
-            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.eservglobal.mvc.CenterPanelController">
+
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="388.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.eservglobal.mvc.CenterPanelController">
     <children>
-        <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutY="-6.0" prefHeight="388.0" prefWidth="115.0"/>
-        <JFXHamburger fx:id="hamburger" layoutX="668.0" layoutY="14.0"/>
-        <GridPane fx:id="gridPane"  visible="false" alignment="CENTER" layoutX="216.0" layoutY="84.0" prefHeight="190.0" prefWidth="337.0">
+        <JFXDrawer fx:id="drawer" defaultDrawerSize="350.0" layoutY="-6.0" prefHeight="388.0" prefWidth="115.0" />
+        <JFXHamburger fx:id="hamburger" layoutX="668.0" layoutY="14.0" />
+        <GridPane fx:id="gridPane" alignment="CENTER" layoutX="216.0" layoutY="84.0" prefHeight="190.0" prefWidth="337.0" visible="false">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="88.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="247.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="88.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="247.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="EM URL"/>
-                <Label text="USERNAME" GridPane.rowIndex="1"/>
-                <Label text="PASSWORD" GridPane.rowIndex="2"/>
-                <JFXTextField alignment="CENTER" GridPane.columnIndex="1">
+                <Label text="Weblogic IP" />
+                <Label text="USERNAME" GridPane.rowIndex="1" />
+                <Label text="PASSWORD" GridPane.rowIndex="2" />
+                <JFXTextField fx:id="address" alignment="CENTER" GridPane.columnIndex="1">
                     <font>
-                        <Font name="Calibri" size="16"/>
+                        <Font name="Calibri" size="16" />
                     </font>
                 </JFXTextField>
-                <JFXTextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <JFXTextField fx:id="username" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <font>
-                        <Font name="Calibri" size="16"/>
+                        <Font name="Calibri" size="16" />
                     </font>
                 </JFXTextField>
-                <JFXPasswordField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <JFXPasswordField fx:id="password" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             </children>
         </GridPane>
-        <JFXButton fx:id="connectBtn" visible="false" buttonType="RAISED" layoutX="343.0" layoutY="274.0" mnemonicParsing="false" text="CONNECT"
-                   ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" AnchorPane.rightAnchor="330.0" AnchorPane.bottomAnchor="60"/>
-    </children>
+        <JFXButton fx:id="connectBtn" buttonType="RAISED" layoutX="343.0" layoutY="274.0" mnemonicParsing="false" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="CONNECT" visible="false" AnchorPane.bottomAnchor="60" AnchorPane.rightAnchor="320.0" />
+       </children>
 </AnchorPane>

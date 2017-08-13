@@ -6,7 +6,6 @@ import oracle.soa.management.facade.Locator;
 import oracle.soa.management.facade.LocatorFactory;
 import oracle.soa.management.util.ComponentInstanceFilter;
 import oracle.soa.management.util.CompositeInstanceFilter;
-
 import javax.naming.Context;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -14,17 +13,27 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GetComponentsBasedOnCompositeId {
-    private static String id = "737372";
+    private String compositeId;
+    private String address;
+    private String username;
+    private String password;
+    private List exclusions;
 
-    public static void main(String[] args) {
-        Locator loc = null;
+    private static Locator loc;
+    private static final String CONTEXT_FACTORY = "weblogic.jndi.WLInitialContextFactory";
 
-        List exclusions = new ArrayList();
+    public GetComponentsBasedOnCompositeId(String address, String username, String password) {
+        this.address = address;
+        this.username = username;
+        this.password = password;
+        exclusions = new ArrayList();
+    }
+
+    public void connect() throws Exception {
         try {
             loc = LocatorFactory.createLocator(getConnectionDetails());
-            CompositeInstanceFilter compositeInFilter =
-                    new CompositeInstanceFilter();
-            compositeInFilter.setId(id);
+            CompositeInstanceFilter compositeInFilter = new CompositeInstanceFilter();
+            compositeInFilter.setId(compositeId);
             compositeInFilter.setOrderBy(CompositeInstanceFilter.ORDER_BY_CREATION_DATE_ASC);
             List<CompositeInstance> compositeInstances =
                     loc.getCompositeInstances(compositeInFilter);
@@ -91,51 +100,35 @@ public class GetComponentsBasedOnCompositeId {
                         System.out.println("<-------------------------------------------->");
                     }
                     System.out.println("--------------------------------------------");
-
                 }
 
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
-            if (loc != null) {
-                loc.close();
-            }
+            closeLoc();
         }
+    }
 
+    public static void closeLoc() {
+        if (loc != null) {
+            loc.close();
+            System.out.println("Closed Connection!");
+        } else {
+            System.out.println("No connection to close");
+        }
     }
 
 
-/*    for exception:  weblogic/security/acl/UserInfo
-    at weblogic.jndi.WLInitialContextFactory.getInitialContext
-
-run as the weblogic.jar libary no longer contains UserInfo class:
-oracle@zoneweblo> java -jar /opt/ORACLE/mw/wlserver/server/lib/wljarbuilder.jar
-Creating new jar file: wlfullclient.jar
-Integrating jar -->(0)/(0)//opt/ORACLE/mw/wlserver/server/lib/weblogic.jar
-.....
-    it will generate wlfullclient.jar
-    */
-
-    private static Hashtable getConnectionDetails() {
+    @SuppressWarnings("unchecked")
+    private Hashtable getConnectionDetails() {
+        System.out.println(address + " " + username + " " + password + " " + CONTEXT_FACTORY);
         Hashtable jndiProps = new Hashtable();
-
-
-/*      Weblogic's implementation of the RMI specification uses a proprietary protocol known as T3.
-        You can think of T3 (and secure T3S) as a layer sitting on top of http to expose/allow JNDI calls by clients.
-        T3 is the protocol used to transport information between WebLogic servers and other types of Java programs.*/
-
-        //Farm_thunder/thunder/AdminServer/soa-infra
-        jndiProps.put(Context.PROVIDER_URL, "t3://10.40.13.238:7001");
-        jndiProps.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
-
+        jndiProps.put(Context.PROVIDER_URL, "t3://" + address + ":7001");
+        jndiProps.put(Context.INITIAL_CONTEXT_FACTORY, CONTEXT_FACTORY);
         //put username in hashmap
-        jndiProps.put(Context.SECURITY_PRINCIPAL, "weblogic");
-
+        jndiProps.put(Context.SECURITY_PRINCIPAL, username);
         //put password in hashmap
-        jndiProps.put(Context.SECURITY_CREDENTIALS, "welcome1");
+        jndiProps.put(Context.SECURITY_CREDENTIALS, password);
         jndiProps.put("dedicated.connection", "true");
         return jndiProps;
     }
-
 }

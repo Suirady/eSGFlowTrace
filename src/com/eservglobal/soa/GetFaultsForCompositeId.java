@@ -16,10 +16,11 @@ public class GetFaultsForCompositeId {
     }
 
     public static void main(String[] args) {
-        String compositeId="1440095";
+        String compositeId = "1440095";
         Locator locator = null;
-        try{
+        try {
             locator = LocatorFactory.createLocator(getConnectionForLocator());
+            System.out.println(locator);
             FaultFilter faultFilter = new FaultFilter();
             faultFilter.setCompositeInstanceId(compositeId);
 
@@ -44,8 +45,10 @@ public class GetFaultsForCompositeId {
             e.printStackTrace();
         } finally {
             try {
-                locator.close();
-                System.out.println("Locator closed successfully");
+                if (locator != null) {
+                    locator.close();
+                    System.out.println("Locator closed successfully");
+                }
             } catch (Exception e) {
                 System.out.println("Exception while closing Locator handle");
                 e.printStackTrace();
@@ -54,8 +57,8 @@ public class GetFaultsForCompositeId {
 
     }
 
-
-    public static Hashtable getConnectionForLocator() {
+    @SuppressWarnings("unchecked")
+    private static Hashtable getConnectionForLocator() {
         Hashtable jndiProps = new Hashtable();
         jndiProps.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
         jndiProps.put(Context.PROVIDER_URL, "t3://xyz.com:12354/soa-infra");

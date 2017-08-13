@@ -15,6 +15,8 @@
         <JFXButton fx:id="b1" buttonType="RAISED" onAction="#chooseAction" prefHeight="74.0" prefWidth="213.0" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Connection details" />
         <JFXButton fx:id="b2" buttonType="RAISED" disable="true" layoutX="10.0" layoutY="123.0" onAction="#chooseAction" opacity="0.5" prefHeight="74.0" prefWidth="213.0" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Search by instance ID" />
         <JFXButton fx:id="b3" buttonType="RAISED" disable="true" layoutX="10.0" layoutY="197.0" onAction="#chooseAction" opacity="0.5" prefHeight="74.0" prefWidth="213.0" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Search by composite name" />
-        <JFXButton fx:id="b4" buttonType="RAISED" disable="true" layoutX="10.0" layoutY="271.0" onAction="#exit" opacity="0.5" prefHeight="74.0" prefWidth="213.0" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Disconnect" />
+        <JFXButton fx:id="b4" buttonType="RAISED" disable="true" layoutX="10.0" layoutY="271.0" onAction="#chooseAction" opacity="0.5" prefHeight="74.0" prefWidth="213.0" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Disconnect" />
     </children>
 </VBox>
+
+

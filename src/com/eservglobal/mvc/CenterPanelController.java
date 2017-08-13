@@ -1,16 +1,19 @@
 package com.eservglobal.mvc;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import com.eservglobal.soa.GetComponentsBasedOnCompositeId;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.util.Duration;
+import javafx.scene.paint.Paint;
+
+import javax.naming.CommunicationException;
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +21,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CenterPanelController implements Initializable {
+
+    @FXML
+    private JFXTextField username;
+
+    @FXML
+    private JFXPasswordField password;
+
+    @FXML
+    private JFXTextField address;
 
     @FXML
     private JFXDrawer drawer;
@@ -32,17 +44,16 @@ public class CenterPanelController implements Initializable {
     private GridPane gridPane;
 
     @FXML
-    private JFXButton connectBtn;
+    public JFXButton connectBtn;
 
     static GridPane gridPaneP;
     static JFXButton connectBtnP;
+    private static int sessionID = 0;
+
+    private GetComponentsBasedOnCompositeId getComponentsBasedOnCompositeId ;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (!Main.isSplashLoaded) {
-            // loadSplashScreen();
-        }
-
         gridPaneP = gridPane;
         connectBtnP = connectBtn;
 
@@ -66,52 +77,53 @@ public class CenterPanelController implements Initializable {
             }
         });
 
-        connectBtnP.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            System.out.println("Button pressed!");
-            SidePanelContentController.b2P.setOpacity(1);
-            SidePanelContentController.b2P.setDisable(false);
-            SidePanelContentController.b3P.setOpacity(1);
-            SidePanelContentController.b3P.setDisable(false);
-            SidePanelContentController.b4P.setOpacity(1);
-            SidePanelContentController.b4P.setDisable(false);
+        connectBtn.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            if (!username.getText().isEmpty() && !password.getText().isEmpty() && !address.getText().isEmpty()) {
+              String sessionID = authorize(address.getText(), username.getText(), password.getText());
+                if (sessionID != null) {
+                    SidePanelContentController.b1P.setOpacity(0.5);
+                    SidePanelContentController.b1P.setDisable(true);
+                    SidePanelContentController.b2P.setOpacity(1);
+                    SidePanelContentController.b2P.setDisable(false);
+                    SidePanelContentController.b3P.setOpacity(1);
+                    SidePanelContentController.b3P.setDisable(false);
+                    SidePanelContentController.b4P.setOpacity(1);
+                    SidePanelContentController.b4P.setDisable(false);
+                    BackPanelController.circleP.setFill(Paint.valueOf("#00ff33"));
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Please complete all the fields!", ButtonType.OK);
+                alert.setTitle(null);
+                alert.show();
+            }
         });
-
     }
 
-    private void loadSplashScreen() {
+    private String authorize(String address, String username, String password) {
+        getComponentsBasedOnCompositeId = new GetComponentsBasedOnCompositeId(address, username, password);
         try {
-            Main.isSplashLoaded = true;
-
-            StackPane pane = FXMLLoader.load(getClass().getResource(("Splash.fxml")));
-            anchorPane.getChildren().setAll(pane);
-
-            FadeTransition fadeIn = new FadeTransition(Duration.seconds(3), pane);
-            fadeIn.setFromValue(0);
-            fadeIn.setToValue(1);
-            fadeIn.setCycleCount(1);
-
-            FadeTransition fadeOut = new FadeTransition(Duration.seconds(3), pane);
-            fadeOut.setFromValue(1);
-            fadeOut.setToValue(0);
-            fadeOut.setCycleCount(1);
-
-            fadeIn.play();
-
-            fadeIn.setOnFinished((e) -> fadeOut.play());
-
-            fadeOut.setOnFinished((e) -> {
-                try {
-                    AnchorPane parentContent = FXMLLoader.load(getClass().getResource(("CenterPanel.fxml")));
-                    anchorPane.getChildren().setAll(parentContent);
-
-                } catch (IOException ex) {
-                    Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-
-        } catch (IOException ex) {
-            Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
+            getComponentsBasedOnCompositeId.connect();
+            return generateSessionID();
+        } catch (CommunicationException e) {
+            setAlertBox(e.getCause().toString());
+        } catch (NamingException e) {
+            setAlertBox("Invalid IP format!");
+            return "xxx";
+        } catch (Exception e) {
+            setAlertBox(e.getMessage());
         }
+        return null;
+    }
+
+    private void setAlertBox(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, message, ButtonType.OK);
+        alert.setTitle(null);
+        alert.showAndWait();
+    }
+
+    private String generateSessionID() {
+        sessionID++;
+        return username.getText() + " - session " + sessionID;
     }
 
 }

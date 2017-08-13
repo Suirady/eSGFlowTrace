@@ -110,9 +110,9 @@ public class CenterPanelController implements Initializable {
                     SidePanelContentController.b1P.setDisable(true);
                     SidePanelContentController.b2P.setOpacity(1);
                     SidePanelContentController.b2P.setDisable(false);
-                    SidePanelContentController.b3P.setOpacity(1);
+                  //  SidePanelContentController.b3P.setOpacity(1);
                     SidePanelContentController.b3P.setDisable(false);
-                    SidePanelContentController.b4P.setOpacity(1);
+                   // SidePanelContentController.b4P.setOpacity(1);
                     SidePanelContentController.b4P.setDisable(false);
                     BackPanelController.circleP.setFill(Paint.valueOf("#00ff33"));
                     connectBtn.setVisible(false);
@@ -153,7 +153,7 @@ public class CenterPanelController implements Initializable {
         } catch (CommunicationException e) {
             setAlertBox(e.getCause().toString());
         } catch (NamingException e) {
-            setAlertBox("Invalid IP format!");
+            setAlertBox("Invalid credentials!");
         } catch (Exception e) {
             setAlertBox(e.getMessage());
         }

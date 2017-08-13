@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,6 +35,7 @@ public class ComponentData {
     private List exclusions;
 
     private ComponentData() {
+        exclusions = new ArrayList();
     }
 
     public void setLoc(Locator loc) {
@@ -83,11 +85,14 @@ public class ComponentData {
                     CompositeInstance compositeInstance = (CompositeInstance) compositeInstancesIterator.next();
                     if (!exclusions.contains(compositeInstance.getCompositeDN().getCompositeName())) {
                         bw.write(String.format("%s\n%s\n%s\n%s\n%s",
-                                "Parent composite name: " + compositeInstance.getCompositeDN().getCompositeName(),
-                                "Parent composite instance id:" + compositeInstance.getId(),
-                                "Parent composite instance id:" + compositeInstance.getId(),
+                                "Parent composite instance id:" + compositeInstance.getParentId(),
+                                "Searched composite name: " + compositeInstance.getCompositeDN().getCompositeName(),
+                                "Searched composite instance id:" + compositeInstance.getId(),
                                 "Title :" + compositeInstance.getTitle(),
-                                "Created date: " + compositeInstance.getCreationDate()));
+                                "Created date: " + compositeInstance.getCreationDate(),
+                                "Domain name:" + compositeInstance.getCompositeDN().getDomainName()));
+                        bw.newLine();
+                        bw.write("##################################################");
                         bw.newLine();
 
                         switch (compositeInstance.getState()) {
@@ -136,16 +141,16 @@ public class ComponentData {
                         while (iterator.hasNext()) {
                             ComponentInstance componentInstance = iterator.next();
 
-                            bw.write(String.format("%s\n%s\n%s\n%s",
+                            bw.write(String.format("%s\n%s\n%s\n%s\n%s",
                                     "Child Component name :" + componentInstance.getComponentName(),
                                     "Child Component instance id :" + componentInstance.getId(),
                                     "STATE :" + componentInstance.getNormalizedStateAsString(),
-                                    "##################################################"));
+                                    "##################################################",
+                                    "PAYLOAD" + componentInstance.getAuditTrail()));
                             bw.newLine();
-                            bw.write("PAYLOAD" + componentInstance.getAuditTrail());
                             bw.write("##################################################");
                             bw.newLine();
-                        }
+                    }
                         bw.write("-----------------------------------------------------------");
                     }
 

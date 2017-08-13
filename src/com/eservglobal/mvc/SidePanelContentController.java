@@ -63,6 +63,10 @@ public class SidePanelContentController implements Initializable {
             case "Disconnect":
                 BackPanelController.circleP.setFill(Paint.valueOf("#ff3140"));
                 CenterPanelController.gridPane2P.setVisible(false);
+                b1.setDisable(false);
+                b2.setDisable(true);
+                b3.setDisable(true);
+                b4.setDisable(true);
                 EnableConnection.closeLoc();
                 break;
         }

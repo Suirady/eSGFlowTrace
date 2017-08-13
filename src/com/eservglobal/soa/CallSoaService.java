@@ -22,6 +22,7 @@ public class CallSoaService {
     public CallSoaService() {
         super();
 
+
         Hashtable jndiProps = new Hashtable();
         jndiProps.put(Context.PROVIDER_URL, "t3://10.40.13.238:7001/Farm_thunder/thunder/AdminServer/soa-infra");
         jndiProps.put(Context.INITIAL_CONTEXT_FACTORY,"weblogic.jndi.WLInitialContextFactory");
@@ -41,7 +42,7 @@ public class CallSoaService {
                         "</ns1:CrossRefrenceRequest>\n";
 
 
-        Locator locator = null;
+        Locator locator;
         try {
             // connect to the soa server
             locator = LocatorFactory.createLocator(jndiProps);

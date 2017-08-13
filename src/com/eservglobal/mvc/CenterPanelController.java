@@ -1,6 +1,7 @@
 package com.eservglobal.mvc;
 
-import com.eservglobal.soa.GetComponentsBasedOnCompositeId;
+import com.eservglobal.soa.ComponentData;
+import com.eservglobal.soa.EnableConnection;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.fxml.FXML;
@@ -8,8 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 
 import javax.naming.CommunicationException;
@@ -21,6 +25,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CenterPanelController implements Initializable {
+
+    @FXML
+    private GridPane gridPane2;
+
+    @FXML
+    private JFXTextField instanceId;
+
+    @FXML
+    private JFXButton searchBtn;
 
     @FXML
     private JFXTextField username;
@@ -47,15 +60,16 @@ public class CenterPanelController implements Initializable {
     public JFXButton connectBtn;
 
     static GridPane gridPaneP;
+    static GridPane gridPane2P;
     static JFXButton connectBtnP;
     private static int sessionID = 0;
-
-    private GetComponentsBasedOnCompositeId getComponentsBasedOnCompositeId ;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gridPaneP = gridPane;
+        gridPane2P = gridPane2;
         connectBtnP = connectBtn;
+        searchBtn.setDisable(true);
 
         try {
             VBox box = FXMLLoader.load(getClass().getResource("SidePanelContent.fxml"));
@@ -63,6 +77,12 @@ public class CenterPanelController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        address.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("(\\d+\\.?)+")) {
+                address.setText(newValue.replaceAll("[^\\d+(.\\d+)*$]", ""));
+            }
+        });
 
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
         transition.setRate(-1);
@@ -77,10 +97,15 @@ public class CenterPanelController implements Initializable {
             }
         });
 
-        connectBtn.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+        connectBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             if (!username.getText().isEmpty() && !password.getText().isEmpty() && !address.getText().isEmpty()) {
-              String sessionID = authorize(address.getText(), username.getText(), password.getText());
+                String sessionID = authorize(address.getText(), username.getText(), password.getText());
+                // to be changed != null
                 if (sessionID != null) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Connection to t3://" + address.getText() + ":7001 was successful!", ButtonType.OK);
+                    alert.setHeaderText(null);
+                    alert.setTitle(null);
+                    alert.showAndWait();
                     SidePanelContentController.b1P.setOpacity(0.5);
                     SidePanelContentController.b1P.setDisable(true);
                     SidePanelContentController.b2P.setOpacity(1);
@@ -90,25 +115,45 @@ public class CenterPanelController implements Initializable {
                     SidePanelContentController.b4P.setOpacity(1);
                     SidePanelContentController.b4P.setDisable(false);
                     BackPanelController.circleP.setFill(Paint.valueOf("#00ff33"));
+                    connectBtn.setVisible(false);
+                    gridPane.setVisible(false);
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Please complete all the fields!", ButtonType.OK);
-                alert.setTitle(null);
-                alert.show();
+                setAlertBox("Please complete all the fields!");
+            }
+        });
+
+        instanceId.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
+            String text = instanceId.getText();
+            boolean disableButton = text.isEmpty() || text.trim().isEmpty();
+            searchBtn.setDisable(disableButton);
+        });
+
+        instanceId.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                instanceId.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        searchBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            ComponentData.getInstance().setInstanceID(instanceId.getText());
+            try {
+                ComponentData.getInstance().storeItems();
+            } catch (Exception ex) {
+                Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
 
     private String authorize(String address, String username, String password) {
-        getComponentsBasedOnCompositeId = new GetComponentsBasedOnCompositeId(address, username, password);
+        EnableConnection enableConnection = new EnableConnection(address, username, password);
         try {
-            getComponentsBasedOnCompositeId.connect();
+            enableConnection.connect();
             return generateSessionID();
         } catch (CommunicationException e) {
             setAlertBox(e.getCause().toString());
         } catch (NamingException e) {
             setAlertBox("Invalid IP format!");
-            return "xxx";
         } catch (Exception e) {
             setAlertBox(e.getMessage());
         }
@@ -117,6 +162,7 @@ public class CenterPanelController implements Initializable {
 
     private void setAlertBox(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING, message, ButtonType.OK);
+        alert.setHeaderText(null);
         alert.setTitle(null);
         alert.showAndWait();
     }

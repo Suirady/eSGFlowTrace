@@ -1,6 +1,6 @@
 package com.eservglobal.mvc;
 
-import com.eservglobal.soa.GetComponentsBasedOnCompositeId;
+import com.eservglobal.soa.EnableConnection;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,12 +51,19 @@ public class SidePanelContentController implements Initializable {
                 }
                 break;
             case "Search by instance ID":
+                isVisible = CenterPanelController.gridPane2P.isVisible();
+                if (isVisible) {
+                    CenterPanelController.gridPane2P.setVisible(false);
+                } else {
+                    CenterPanelController.gridPane2P.setVisible(true);
+                }
                 break;
             case "Search by composite name":
                 break;
             case "Disconnect":
                 BackPanelController.circleP.setFill(Paint.valueOf("#ff3140"));
-                GetComponentsBasedOnCompositeId.closeLoc();
+                CenterPanelController.gridPane2P.setVisible(false);
+                EnableConnection.closeLoc();
                 break;
         }
     }

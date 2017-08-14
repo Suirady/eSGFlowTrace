@@ -26,6 +26,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -123,9 +124,9 @@ public class CenterPanelController implements Initializable {
                 String sessionID = authorize(address.getText(), username.getText(), password.getText());
                 // to be changed != null
                 if (sessionID != null) {
-                    setAlertBox(Alert.AlertType.INFORMATION, "Connection to t3://" + address.getText() + ":7001 successful!","Information");
+                    setAlertBox(Alert.AlertType.INFORMATION, "Connection to t3://" + address.getText() + ":7001 successful!", "Information");
                     SidePanelContentController.b1P.setDisable(true);
-                    SidePanelContentController.b2P.setOpacity(0.5);
+                    SidePanelContentController.b1P.setOpacity(0.5);
                     SidePanelContentController.b2P.setDisable(false);
                     SidePanelContentController.b2P.setOpacity(1);
                     SidePanelContentController.b3P.setDisable(false);
@@ -137,7 +138,7 @@ public class CenterPanelController implements Initializable {
                     gridPane.setVisible(false);
                 }
             } else {
-                setAlertBox(Alert.AlertType.WARNING, "Please complete all the fields!","Warning");
+                setAlertBox(Alert.AlertType.WARNING, "Please complete all the fields!", "Warning");
             }
         });
 
@@ -157,10 +158,14 @@ public class CenterPanelController implements Initializable {
             ComponentData.getInstance().setInstanceID(instanceId.getText());
             try {
                 ComponentData.getInstance().storeAuditTrail();
-                setAlertBox(Alert.AlertType.INFORMATION, "Search for composite ID " + instanceId.getText() + " complete!","Information");
+                setAlertBox(Alert.AlertType.INFORMATION, "Search for composite ID " + instanceId.getText() + " complete!", "Information");
                 ComponentData.getInstance().displaySummary();
                 searchBtn.setDisable(true);
                 areaText.setVisible(true);
+            } catch (NoSuchElementException ex) {
+                CenterPanelController.areaTextP.clear();
+                CenterPanelController.areaTextP.setText("Composite instance not found!");
+                CenterPanelController.saveFileBtnP.setVisible(false);
             } catch (Exception ex) {
                 Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -197,7 +202,7 @@ public class CenterPanelController implements Initializable {
             }
             bw.flush();
             bw.close();
-            setAlertBox(Alert.AlertType.INFORMATION,"File saved to disk successflly!","Information");
+            setAlertBox(Alert.AlertType.INFORMATION, "File saved to disk successflly!", "Information");
         } catch (IOException ex) {
             Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -210,16 +215,16 @@ public class CenterPanelController implements Initializable {
             enableConnection.connect();
             return generateSessionID();
         } catch (CommunicationException e) {
-            setAlertBox(Alert.AlertType.ERROR, e.getCause().toString(),"Error");
+            setAlertBox(Alert.AlertType.ERROR, e.getCause().toString(), "Error");
         } catch (NamingException e) {
-            setAlertBox(Alert.AlertType.WARNING, "Invalid credentials!","Warning");
+            setAlertBox(Alert.AlertType.WARNING, "Invalid credentials!", "Warning");
         } catch (Exception e) {
-            setAlertBox(Alert.AlertType.ERROR, e.getMessage(),"Error");
+            setAlertBox(Alert.AlertType.ERROR, e.getMessage(), "Error");
         }
         return null;
     }
 
-    private void setAlertBox(Alert.AlertType type, String message,String title) {
+    private void setAlertBox(Alert.AlertType type, String message, String title) {
         Alert alert = new Alert(type, message, ButtonType.OK);
         alert.setHeaderText(null);
         alert.setTitle(title);

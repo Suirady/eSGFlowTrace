@@ -16,12 +16,16 @@ public class SidePanelContentController implements Initializable {
 
     @FXML
     private JFXButton b1;
+
     @FXML
     private JFXButton b2;
+
     @FXML
     private JFXButton b3;
+
     @FXML
     private JFXButton b4;
+
     static JFXButton b1P;
     static JFXButton b2P;
     static JFXButton b3P;
@@ -50,7 +54,7 @@ public class SidePanelContentController implements Initializable {
                     CenterPanelController.connectBtnP.setVisible(true);
                 }
                 break;
-            case "Search by instance ID":
+            case "Audit trail for instance ID":
                 isVisible = CenterPanelController.gridPane2P.isVisible();
                 if (isVisible) {
                     CenterPanelController.gridPane2P.setVisible(false);
@@ -58,17 +62,36 @@ public class SidePanelContentController implements Initializable {
                     CenterPanelController.gridPane2P.setVisible(true);
                 }
                 break;
-            case "Search by composite name":
+            case "Faults for instance ID":
                 break;
             case "Disconnect":
                 BackPanelController.circleP.setFill(Paint.valueOf("#ff3140"));
                 CenterPanelController.gridPane2P.setVisible(false);
+                CenterPanelController.areaTextP.setVisible(false);
+                CenterPanelController.saveFileBtnP.setVisible(false);
+                CenterPanelController.addressP.clear();
+                CenterPanelController.usernameP.clear();
+                CenterPanelController.passwordP.clear();
                 b1.setDisable(false);
+                SidePanelContentController.b1P.setOpacity(1);
                 b2.setDisable(true);
+                SidePanelContentController.b2P.setOpacity(0.5);
                 b3.setDisable(true);
+                SidePanelContentController.b3P.setOpacity(0.5);
                 b4.setDisable(true);
+                SidePanelContentController.b4P.setOpacity(0.5);
                 EnableConnection.closeLoc();
                 break;
         }
     }
+/*
+// method to get a node from grid pane
+    private Node getNodeFromGridPane(GridPane gridPane, int row, int column) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) == column && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
+        }
+        return null;
+    }*/
 }

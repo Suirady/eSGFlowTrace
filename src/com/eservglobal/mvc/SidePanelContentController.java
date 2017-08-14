@@ -58,6 +58,8 @@ public class SidePanelContentController implements Initializable {
                 isVisible = CenterPanelController.gridPane2P.isVisible();
                 if (isVisible) {
                     CenterPanelController.gridPane2P.setVisible(false);
+                    CenterPanelController.areaTextP.setVisible(false);
+                    CenterPanelController.saveFileBtnP.setVisible(false);
                 } else {
                     CenterPanelController.gridPane2P.setVisible(true);
                 }
@@ -84,14 +86,4 @@ public class SidePanelContentController implements Initializable {
                 break;
         }
     }
-/*
-// method to get a node from grid pane
-    private Node getNodeFromGridPane(GridPane gridPane, int row, int column) {
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getColumnIndex(node) == column && GridPane.getRowIndex(node) == row) {
-                return node;
-            }
-        }
-        return null;
-    }*/
 }

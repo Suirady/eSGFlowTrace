@@ -7,24 +7,36 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 import javax.naming.CommunicationException;
 import javax.naming.NamingException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CenterPanelController implements Initializable {
+
+    @FXML
+    private JFXButton saveFileBtn;
+
+    @FXML
+    private JFXTextArea areaText;
 
     @FXML
     private GridPane gridPane2;
@@ -51,25 +63,34 @@ public class CenterPanelController implements Initializable {
     private JFXHamburger hamburger;
 
     @FXML
-    private AnchorPane anchorPane;
-
-    @FXML
     private GridPane gridPane;
 
     @FXML
     public JFXButton connectBtn;
 
+    public static TextArea areaTextP;
+    public static JFXButton saveFileBtnP;
     static GridPane gridPaneP;
     static GridPane gridPane2P;
     static JFXButton connectBtnP;
+    static JFXTextField addressP;
+    static JFXTextField usernameP;
+    static JFXPasswordField passwordP;
     private static int sessionID = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        areaText.setEditable(false);
+        searchBtn.setDisable(true);
         gridPaneP = gridPane;
         gridPane2P = gridPane2;
         connectBtnP = connectBtn;
-        searchBtn.setDisable(true);
+        saveFileBtnP = saveFileBtn;
+        areaTextP = areaText;
+        addressP = address;
+        usernameP = username;
+        passwordP = password;
 
         try {
             VBox box = FXMLLoader.load(getClass().getResource("SidePanelContent.fxml"));
@@ -102,28 +123,25 @@ public class CenterPanelController implements Initializable {
                 String sessionID = authorize(address.getText(), username.getText(), password.getText());
                 // to be changed != null
                 if (sessionID != null) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Connection to t3://" + address.getText() + ":7001 was successful!", ButtonType.OK);
-                    alert.setHeaderText(null);
-                    alert.setTitle(null);
-                    alert.showAndWait();
-                    SidePanelContentController.b1P.setOpacity(0.5);
+                    setAlertBox(Alert.AlertType.INFORMATION, "Connection to t3://" + address.getText() + ":7001 successful!","Information");
                     SidePanelContentController.b1P.setDisable(true);
-                    SidePanelContentController.b2P.setOpacity(1);
+                    SidePanelContentController.b2P.setOpacity(0.5);
                     SidePanelContentController.b2P.setDisable(false);
-                  //  SidePanelContentController.b3P.setOpacity(1);
+                    SidePanelContentController.b2P.setOpacity(1);
                     SidePanelContentController.b3P.setDisable(false);
-                   // SidePanelContentController.b4P.setOpacity(1);
+                    SidePanelContentController.b3P.setOpacity(1);
                     SidePanelContentController.b4P.setDisable(false);
+                    SidePanelContentController.b4P.setOpacity(1);
                     BackPanelController.circleP.setFill(Paint.valueOf("#00ff33"));
                     connectBtn.setVisible(false);
                     gridPane.setVisible(false);
                 }
             } else {
-                setAlertBox("Please complete all the fields!");
+                setAlertBox(Alert.AlertType.WARNING, "Please complete all the fields!","Warning");
             }
         });
 
-        instanceId.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
+        instanceId.addEventHandler(KeyEvent.KEY_RELEASED, (e) -> {
             String text = instanceId.getText();
             boolean disableButton = text.isEmpty() || text.trim().isEmpty();
             searchBtn.setDisable(disableButton);
@@ -135,14 +153,55 @@ public class CenterPanelController implements Initializable {
             }
         });
 
-        searchBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+        searchBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             ComponentData.getInstance().setInstanceID(instanceId.getText());
             try {
-                ComponentData.getInstance().storeItems();
+                ComponentData.getInstance().storeAuditTrail();
+                setAlertBox(Alert.AlertType.INFORMATION, "Search for composite ID " + instanceId.getText() + " complete!","Information");
+                ComponentData.getInstance().displaySummary();
+                searchBtn.setDisable(true);
+                areaText.setVisible(true);
             } catch (Exception ex) {
                 Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+
+        saveFileBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            FileChooser fileChooser = new FileChooser();
+
+            // set the extension filter to .txt
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+
+            // show the save file dialog box
+            Scene scene = saveFileBtn.getScene();
+            if (scene != null) {
+                Window window = scene.getWindow();
+                File file = fileChooser.showSaveDialog(window);
+                if (file != null) {
+                    SaveFile(ComponentData.getFilename(), file);
+                }
+            }
+        });
+    }
+
+    private void SaveFile(String fileToCopy, File file) {
+        Path path = Paths.get(fileToCopy);
+        // try-with-resources
+        try (BufferedReader br = Files.newBufferedReader(path)) {
+            String line;
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            while ((line = br.readLine()) != null) {
+                bw.write(line);
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+            setAlertBox(Alert.AlertType.INFORMATION,"File saved to disk successflly!","Information");
+        } catch (IOException ex) {
+            Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private String authorize(String address, String username, String password) {
@@ -151,19 +210,19 @@ public class CenterPanelController implements Initializable {
             enableConnection.connect();
             return generateSessionID();
         } catch (CommunicationException e) {
-            setAlertBox(e.getCause().toString());
+            setAlertBox(Alert.AlertType.ERROR, e.getCause().toString(),"Error");
         } catch (NamingException e) {
-            setAlertBox("Invalid credentials!");
+            setAlertBox(Alert.AlertType.WARNING, "Invalid credentials!","Warning");
         } catch (Exception e) {
-            setAlertBox(e.getMessage());
+            setAlertBox(Alert.AlertType.ERROR, e.getMessage(),"Error");
         }
         return null;
     }
 
-    private void setAlertBox(String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING, message, ButtonType.OK);
+    private void setAlertBox(Alert.AlertType type, String message,String title) {
+        Alert alert = new Alert(type, message, ButtonType.OK);
         alert.setHeaderText(null);
-        alert.setTitle(null);
+        alert.setTitle(title);
         alert.showAndWait();
     }
 
@@ -171,5 +230,4 @@ public class CenterPanelController implements Initializable {
         sessionID++;
         return username.getText() + " - session " + sessionID;
     }
-
 }

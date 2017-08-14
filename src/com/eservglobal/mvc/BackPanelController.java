@@ -27,7 +27,7 @@ public class BackPanelController implements Initializable {
         try {
             borderPane.setCenter(FXMLLoader.load(getClass().getResource("CenterPanel.fxml")));
         } catch (IOException ex) {
-            Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BackPanelController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

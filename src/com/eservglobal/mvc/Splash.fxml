@@ -4,12 +4,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="222.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.eservglobal.mvc.SplashController">
-    <children>
-        <ImageView fitHeight="191.0" fitWidth="669.0" pickOnBounds="true">
-            <image>
-                <Image url="@resources/Loading.gif" />
-            </image>
-        </ImageView>
-    </children>
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="1235.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.eservglobal.mvc.SplashController">
+    <ImageView fitHeight="150.0" fitWidth="839.0" layoutX="255.0" layoutY="75.0" pickOnBounds="true" StackPane.alignment="CENTER_RIGHT">
+        <image >
+            <Image url="@resources/Loading.gif"  />
+        </image>
+    </ImageView>
 </StackPane>

@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.BorderPane?>
@@ -10,13 +9,14 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Hyperlink?>
 <BorderPane fx:id="borderPane" prefHeight="341.0" prefWidth="512.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="com.eservglobal.mvc.BackPanelController">
     <bottom>
-        <Label alignment="CENTER" text="©Copyright eServGlobal 2017" BorderPane.alignment="CENTER">
+        <Hyperlink alignment="CENTER" text="©Copyright eServGlobal 2017" BorderPane.alignment="CENTER" fx:id="hyperLink" >
             <font>
                 <Font name="Calibri" size="14" />
             </font>
-        </Label>
+        </Hyperlink>
     </bottom>
     <top>
         <HBox>
@@ -34,9 +34,6 @@
                   <bumpInput>
                      <Shadow />
                   </bumpInput>
-                  <light>
-                     <Light.Distant />
-                  </light>
                </Lighting>
             </effect></Circle>
         </HBox>

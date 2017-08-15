@@ -66,9 +66,10 @@
               </font>
           </JFXTextField>
           <JFXButton fx:id="searchBtn" buttonType="RAISED" mnemonicParsing="false" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Search" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+           <JFXButton fx:id="searchBtn1" buttonType="RAISED" mnemonicParsing="false" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Search" GridPane.columnIndex="2" GridPane.halignment="CENTER"  />
          </children>
       </GridPane>
       <JFXTextArea fx:id="areaText" layoutX="211.0" layoutY="188.0" prefHeight="96.0" prefWidth="337.0" visible="false" />
-      <JFXButton fx:id="saveFileBtn" layoutX="354.0" layoutY="303.0" buttonType="RAISED" mnemonicParsing="false" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Save File" visible="false" AnchorPane.rightAnchor="330"/>
+      <JFXButton fx:id="saveFileBtn" buttonType="RAISED" layoutX="354.0" layoutY="303.0" mnemonicParsing="false" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Save File" visible="false" AnchorPane.rightAnchor="330" />
        </children>
 </AnchorPane>

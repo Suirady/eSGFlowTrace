@@ -3,13 +3,13 @@ package com.eservglobal.soa;
 import com.eservglobal.mvc.CenterPanelController;
 import oracle.soa.management.facade.ComponentInstance;
 import oracle.soa.management.facade.CompositeInstance;
+import oracle.soa.management.facade.Fault;
 import oracle.soa.management.facade.Locator;
 import oracle.soa.management.util.ComponentInstanceFilter;
 import oracle.soa.management.util.CompositeInstanceFilter;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import oracle.soa.management.util.FaultFilter;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,17 +26,21 @@ import java.util.logging.Logger;
  * we will read and write data to a file
  */
 
-public class ComponentData {
+public class ComponentData implements Serializable {
 
-    private static String filename;
-    private static ComponentData componentData;
-
+    private String filenameAudit;
+    private String filenameFaults;
+    private boolean whatFile;
+    private List exclusions;
     private String instanceID;
     private Locator loc;
+    private static ComponentData componentData;
     private List<CompositeInstance> compositeInstances;
-    private List exclusions;
+
 
     private ComponentData() {
+        instanceID = null;
+        loc = null;
         exclusions = new ArrayList();
     }
 
@@ -44,12 +48,12 @@ public class ComponentData {
         this.loc = loc;
     }
 
-    public static String getFilename() {
-        return filename;
-    }
-
-    Locator getLoc() {
-        return loc;
+    public String getFilename() {
+        if (whatFile) {
+            return filenameAudit;
+        } else {
+            return filenameFaults;
+        }
     }
 
     public void setInstanceID(String instanceID) {
@@ -68,17 +72,16 @@ public class ComponentData {
 
     public void storeAuditTrail() throws Exception {
         File temp = File.createTempFile("auditTrail", ".tmp");
-        filename =  temp.getAbsolutePath();
-        // try-with-resources
+        temp.deleteOnExit();
+        filenameAudit = temp.getAbsolutePath();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(temp))) {
-            if (getLoc() != null) {
+            if (loc != null) {
+                System.out.println(loc);
                 CompositeInstanceFilter compositeInFilter = new CompositeInstanceFilter();
                 compositeInFilter.setId(instanceID);
                 compositeInFilter.setOrderBy(CompositeInstanceFilter.ORDER_BY_CREATION_DATE_ASC);
-
-                compositeInstances = getLoc().getCompositeInstances(compositeInFilter);
-                //   bw.write("Number of composite instances is: " + compositeInstances.size());
-                bw.write("\t\t\t\tAudit trail summary");
+                compositeInstances = loc.getCompositeInstances(compositeInFilter);
+                bw.write("\t\tAudit trail summary for instanceID: " + instanceID);
                 bw.newLine();
                 bw.newLine();
                 Iterator compositeInstancesIterator = compositeInstances.iterator();
@@ -156,12 +159,49 @@ public class ComponentData {
 
                 }
             }
+            whatFile = true;
+        } finally {
+            closeLoc();
+        }
+    }
 
+    public void storeFaults() throws Exception {
+        File temp = File.createTempFile("faultsTrail", "tmp");
+        temp.deleteOnExit();
+        filenameFaults = temp.getAbsolutePath();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(temp))) {
+            if (loc != null) {
+                System.out.println(loc);
+                bw.write("\t\tFaults summary for instanceID: " + instanceID);
+                bw.newLine();
+                bw.newLine();
+                FaultFilter faultFilter = new FaultFilter();
+                faultFilter.setCompositeInstanceId(instanceID);
+                faultFilter.setOrderBy(FaultFilter.ORDER_BY_CREATION_DATE_DESC);
+                faultFilter.setPageSize(10);
+                List<Fault> list = loc.getFaults(faultFilter);
+                Iterator<Fault> faults = list.iterator();
+                while (faults.hasNext()) {
+                    Fault fault = faults.next();
+                    bw.write(String.format("%s\n%s\n%s\n%s\n%s",
+                            "Composite instance id: " + fault.getCompositeInstanceId(),
+                            "Component name: " + fault.getComponentName(),
+                            "Creation date: " + fault.getCreationDate(),
+                            "Message: " + fault.getMessage(),
+                            "##################################################"));
+                    bw.newLine();
+                }
+                bw.write("##################################################");
+                bw.newLine();
+                whatFile = false;
+            }
+        } finally {
+            closeLoc();
         }
     }
 
     public void displaySummary() {
-        Path path = Paths.get(filename);
+        Path path = Paths.get(getFilename());
         try (Scanner scan = new Scanner(Files.newBufferedReader(path))) {
             scan.useDelimiter("#");
             CenterPanelController.areaTextP.setText(scan.next());
@@ -172,14 +212,14 @@ public class ComponentData {
         }
     }
 
-    public void deleteFile() {
-        if (getLoc() != null) {
-            Path path = Paths.get(filename);
-            try {
-                Files.delete(path);
-            } catch (IOException e) {
-                Logger.getLogger(ComponentData.class.getName()).log(Level.SEVERE, null, e);
-            }
+    public void closeLoc() {
+        System.out.println("Loc value entering closeLoc(): " + loc.toString());
+        if (ComponentData.getInstance().loc != null) {
+            ComponentData.getInstance().loc.close();
+            System.out.println("Loc value after closeLoc(): " + loc.toString());
+            System.out.println("Closed Connection!");
+        } else {
+            System.out.println("Exception while closing Locator handle");
         }
     }
 }

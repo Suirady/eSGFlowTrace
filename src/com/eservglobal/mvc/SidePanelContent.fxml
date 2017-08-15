@@ -9,7 +9,7 @@
     <children>
         <ImageView fitHeight="127.0" fitWidth="199.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@resources/eSG_Logo_RGB.jpg" />
+                <Image url="@../resources/eSG_Logo_RGB.jpg" />
             </image>
         </ImageView>
         <JFXButton fx:id="b1" buttonType="RAISED" onAction="#chooseAction" prefHeight="74.0" prefWidth="213.0" ripplerFill="#fc0000" style="-fx-background-color: #f1f1f1;" text="Connection details" />

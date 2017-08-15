@@ -23,16 +23,6 @@ public class EnableConnection {
             ComponentData.getInstance().setLoc(LocatorFactory.createLocator(getConnectionDetails()));
     }
 
-    public static void closeLoc() {
-        if (ComponentData.getInstance().getLoc() != null) {
-            ComponentData.getInstance().getLoc().close();
-            System.out.println("Closed Connection!");
-        } else {
-            System.out.println("No connection to close");
-        }
-    }
-
-
     @SuppressWarnings("unchecked")
     private Hashtable getConnectionDetails() throws NullPointerException {
         System.out.println(address + " " + username + " " + password + " " + CONTEXT_FACTORY);

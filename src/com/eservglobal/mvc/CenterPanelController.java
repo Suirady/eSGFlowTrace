@@ -26,12 +26,14 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CenterPanelController implements Initializable {
+
+    @FXML
+    private JFXButton searchBtn1;
 
     @FXML
     private JFXButton saveFileBtn;
@@ -74,6 +76,8 @@ public class CenterPanelController implements Initializable {
     static GridPane gridPaneP;
     static GridPane gridPane2P;
     static JFXButton connectBtnP;
+    static JFXButton searchBtnP;
+    static JFXButton searchBtn1P;
     static JFXTextField addressP;
     static JFXTextField usernameP;
     static JFXPasswordField passwordP;
@@ -84,10 +88,13 @@ public class CenterPanelController implements Initializable {
 
         areaText.setEditable(false);
         searchBtn.setDisable(true);
+        searchBtn1.setDisable(true);
         gridPaneP = gridPane;
         gridPane2P = gridPane2;
         connectBtnP = connectBtn;
         saveFileBtnP = saveFileBtn;
+        searchBtnP = searchBtn;
+        searchBtn1P = searchBtn1;
         areaTextP = areaText;
         addressP = address;
         usernameP = username;
@@ -122,7 +129,6 @@ public class CenterPanelController implements Initializable {
         connectBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             if (!username.getText().isEmpty() && !password.getText().isEmpty() && !address.getText().isEmpty()) {
                 String sessionID = authorize(address.getText(), username.getText(), password.getText());
-                // to be changed != null
                 if (sessionID != null) {
                     setAlertBox(Alert.AlertType.INFORMATION, "Connection to t3://" + address.getText() + ":7001 successful!", "Information");
                     SidePanelContentController.b1P.setDisable(true);
@@ -146,6 +152,7 @@ public class CenterPanelController implements Initializable {
             String text = instanceId.getText();
             boolean disableButton = text.isEmpty() || text.trim().isEmpty();
             searchBtn.setDisable(disableButton);
+            searchBtn1.setDisable(disableButton);
         });
 
         instanceId.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -158,14 +165,23 @@ public class CenterPanelController implements Initializable {
             ComponentData.getInstance().setInstanceID(instanceId.getText());
             try {
                 ComponentData.getInstance().storeAuditTrail();
-                setAlertBox(Alert.AlertType.INFORMATION, "Search for composite ID " + instanceId.getText() + " complete!", "Information");
+                setAlertBox(Alert.AlertType.INFORMATION, "Search auditTrail for composite ID " + instanceId.getText() + " complete!", "Information");
                 ComponentData.getInstance().displaySummary();
                 searchBtn.setDisable(true);
                 areaText.setVisible(true);
-            } catch (NoSuchElementException ex) {
-                CenterPanelController.areaTextP.clear();
-                CenterPanelController.areaTextP.setText("Composite instance not found!");
-                CenterPanelController.saveFileBtnP.setVisible(false);
+            } catch (Exception ex) {
+                Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
+        searchBtn1.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            ComponentData.getInstance().setInstanceID(instanceId.getText());
+            try {
+                ComponentData.getInstance().storeFaults();
+                setAlertBox(Alert.AlertType.INFORMATION, "Search faults for composite ID " + instanceId.getText() + " complete!", "Information");
+                ComponentData.getInstance().displaySummary();
+                searchBtn1.setDisable(true);
+                areaText.setVisible(true);
             } catch (Exception ex) {
                 Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -184,7 +200,7 @@ public class CenterPanelController implements Initializable {
                 Window window = scene.getWindow();
                 File file = fileChooser.showSaveDialog(window);
                 if (file != null) {
-                    SaveFile(ComponentData.getFilename(), file);
+                    SaveFile(ComponentData.getInstance().getFilename(), file);
                 }
             }
         });
@@ -202,7 +218,7 @@ public class CenterPanelController implements Initializable {
             }
             bw.flush();
             bw.close();
-            setAlertBox(Alert.AlertType.INFORMATION, "File saved to disk successflly!", "Information");
+            setAlertBox(Alert.AlertType.INFORMATION, "File saved to disk successfully!", "Information");
         } catch (IOException ex) {
             Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
         }

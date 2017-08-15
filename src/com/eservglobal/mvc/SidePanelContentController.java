@@ -1,16 +1,14 @@
 package com.eservglobal.mvc;
 
-import com.eservglobal.soa.EnableConnection;
+import com.eservglobal.soa.ComponentData;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.paint.Paint;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 
 public class SidePanelContentController implements Initializable {
 
@@ -25,7 +23,6 @@ public class SidePanelContentController implements Initializable {
 
     @FXML
     private JFXButton b4;
-
     static JFXButton b1P;
     static JFXButton b2P;
     static JFXButton b3P;
@@ -62,9 +59,21 @@ public class SidePanelContentController implements Initializable {
                     CenterPanelController.saveFileBtnP.setVisible(false);
                 } else {
                     CenterPanelController.gridPane2P.setVisible(true);
+                    CenterPanelController.searchBtnP.setVisible(true);
+                    CenterPanelController.searchBtn1P.setVisible(false);
                 }
                 break;
             case "Faults for instance ID":
+                isVisible = CenterPanelController.gridPane2P.isVisible();
+                if (isVisible) {
+                    CenterPanelController.gridPane2P.setVisible(false);
+                    CenterPanelController.areaTextP.setVisible(false);
+                    CenterPanelController.saveFileBtnP.setVisible(false);
+                } else {
+                    CenterPanelController.gridPane2P.setVisible(true);
+                    CenterPanelController.searchBtnP.setVisible(false);
+                    CenterPanelController.searchBtn1P.setVisible(true);
+                }
                 break;
             case "Disconnect":
                 BackPanelController.circleP.setFill(Paint.valueOf("#ff3140"));
@@ -82,7 +91,7 @@ public class SidePanelContentController implements Initializable {
                 SidePanelContentController.b3P.setOpacity(0.5);
                 b4.setDisable(true);
                 SidePanelContentController.b4P.setOpacity(0.5);
-                EnableConnection.closeLoc();
+                ComponentData.getInstance().closeLoc();
                 break;
         }
     }

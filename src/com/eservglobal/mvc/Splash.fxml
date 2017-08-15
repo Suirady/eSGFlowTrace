@@ -7,7 +7,7 @@
 <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="1235.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.eservglobal.mvc.SplashController">
     <ImageView fitHeight="150.0" fitWidth="839.0" layoutX="255.0" layoutY="75.0" pickOnBounds="true" StackPane.alignment="CENTER_RIGHT">
         <image >
-            <Image url="@resources/Loading.gif"  />
+            <Image url="@../resources/Loading.gif"  />
         </image>
     </ImageView>
 </StackPane>

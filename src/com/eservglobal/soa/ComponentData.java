@@ -76,7 +76,6 @@ public class ComponentData implements Serializable {
         filenameAudit = temp.getAbsolutePath();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(temp))) {
             if (loc != null) {
-                System.out.println(loc);
                 CompositeInstanceFilter compositeInFilter = new CompositeInstanceFilter();
                 compositeInFilter.setId(instanceID);
                 compositeInFilter.setOrderBy(CompositeInstanceFilter.ORDER_BY_CREATION_DATE_ASC);
@@ -171,7 +170,6 @@ public class ComponentData implements Serializable {
         filenameFaults = temp.getAbsolutePath();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(temp))) {
             if (loc != null) {
-                System.out.println(loc);
                 bw.write("\t\tFaults summary for instanceID: " + instanceID);
                 bw.newLine();
                 bw.newLine();
@@ -213,10 +211,8 @@ public class ComponentData implements Serializable {
     }
 
     public void closeLoc() {
-        System.out.println("Loc value entering closeLoc(): " + loc.toString());
         if (ComponentData.getInstance().loc != null) {
             ComponentData.getInstance().loc.close();
-            System.out.println("Loc value after closeLoc(): " + loc.toString());
             System.out.println("Closed Connection!");
         } else {
             System.out.println("Exception while closing Locator handle");

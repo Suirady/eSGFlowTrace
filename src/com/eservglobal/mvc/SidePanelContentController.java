@@ -39,7 +39,6 @@ public class SidePanelContentController implements Initializable {
     @FXML
     private void chooseAction(ActionEvent event) throws IOException {
         JFXButton btn = (JFXButton) event.getSource();
-        System.out.println(btn.getText());
         switch (btn.getText()) {
             case "Connection details":
                 boolean isVisible = CenterPanelController.gridPaneP.isVisible();

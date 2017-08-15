@@ -25,7 +25,6 @@ public class EnableConnection {
 
     @SuppressWarnings("unchecked")
     private Hashtable getConnectionDetails() throws NullPointerException {
-        System.out.println(address + " " + username + " " + password + " " + CONTEXT_FACTORY);
         Hashtable jndiProps = new Hashtable();
         jndiProps.put(Context.PROVIDER_URL, "t3://" + address + ":7001");
         jndiProps.put(Context.INITIAL_CONTEXT_FACTORY, CONTEXT_FACTORY);

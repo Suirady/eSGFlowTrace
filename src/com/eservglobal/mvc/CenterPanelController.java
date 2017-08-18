@@ -169,9 +169,6 @@ public class CenterPanelController implements Initializable {
                 ComponentData.getInstance().displaySummary();
                 searchBtn.setDisable(true);
                 areaText.setVisible(true);
-                if (!areaText.getText().contains("#")) {
-                    areaText.setText("\t\tNo available composite with ID: " + instanceId.getText());
-                }
             } catch (Exception ex) {
                 Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -185,9 +182,6 @@ public class CenterPanelController implements Initializable {
                 ComponentData.getInstance().displaySummary();
                 searchBtn1.setDisable(true);
                 areaText.setVisible(true);
-                if (!areaText.getText().contains("#")) {
-                    areaText.setText("\t\tNo available composite with ID: " + instanceId.getText());
-                }
             } catch (Exception ex) {
                 Logger.getLogger(CenterPanelController.class.getName()).log(Level.SEVERE, null, ex);
             }

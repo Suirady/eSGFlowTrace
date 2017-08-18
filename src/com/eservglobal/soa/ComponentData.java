@@ -92,7 +92,7 @@ public class ComponentData implements Serializable {
                                 "Searched composite name: " + compositeInstance.getCompositeDN().getCompositeName(),
                                 "Searched composite instance id: " + compositeInstance.getId(),
                                 "Title :" + compositeInstance.getTitle(),
-                                "Created date: " + compositeInstance.getCreationDate(),
+                                "Creation date: " + compositeInstance.getCreationDate(),
                                 "Domain name: " + compositeInstance.getCompositeDN().getDomainName()));
                         bw.newLine();
 
@@ -198,12 +198,21 @@ public class ComponentData implements Serializable {
         }
     }
 
+    //                    if (!areaTextP.getText().contains("###")) {
+//
+//    }
     public void displaySummary() {
         Path path = Paths.get(getFilename());
         try (Scanner scan = new Scanner(Files.newBufferedReader(path))) {
             scan.useDelimiter("#");
-            CenterPanelController.areaTextP.setText(scan.next());
-            CenterPanelController.saveFileBtnP.setVisible(true);
+            String message = scan.next();
+            if (!message.trim().contains("Creation date")) {
+                CenterPanelController.areaTextP.setText("\t\tNo available instance with this ID");
+                CenterPanelController.saveFileBtnP.setVisible(false);
+            } else {
+                CenterPanelController.areaTextP.setText(message);
+                CenterPanelController.saveFileBtnP.setVisible(true);
+            }
             scan.close();
         } catch (IOException e) {
             Logger.getLogger(ComponentData.class.getName()).log(Level.SEVERE, null, e);
